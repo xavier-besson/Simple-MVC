@@ -87,5 +87,5 @@ small{
 }
 
 .alert-box{
-	margin-bottom:0;
+	margin-bottom:0 !important;
 }
