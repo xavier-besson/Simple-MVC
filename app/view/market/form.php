@@ -4,6 +4,15 @@
 		<a href="#" id="form-close">&#215;</a>
 		<div class="large-12 columns">
 			<h1 id="form-title">Add a new article</h1>
+			<p>
+				<b>Useful links</b>
+				<br>
+				<small>
+				<a href="http://www.cora.fr/amphion" target="_blank">> Cora Amphion</a>
+				<br>
+				<a href="http://www.coradrive.fr/amphion/" target="_blank">> Cora Drive Amphion</a>
+				</small>
+			</p>
 			<form id="form" data-abide="ajax">
 				<input type="hidden" id="id" name="id">
 				<div class="row">
