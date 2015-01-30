@@ -148,11 +148,11 @@ $(document).ready(function () {
 
 		$list.empty();
 		var $tr, $td, $a, total, owner;
-		var admin = window.user.group == 1;
+		var admin = window.user.role == 1;
 
 		$.each(data, function (key, item) {
 
-			total = parseInt(item.quantity, 10) * parseInt(item.unit_price, 10);
+			total = parseInt(item.quantity, 10) * parseFloat(item.unit_price, 10);
 
 			$tr = $('<tr></tr>');
 			$list.append($tr);
@@ -221,7 +221,7 @@ $(document).ready(function () {
 	function updateList() {
 		sendAjaxRequest({
 			type: 'GET',
-			url: 'market/list',
+			url: 'article/list',
 			data: {},
 			before: function () {
 				$listLoader.addClass('visible');

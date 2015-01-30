@@ -18,7 +18,7 @@ class Market extends \Controller\Template {
 
 	public function before() {
 		$isAjax = \Request::isAjax();
-		if (!\Helper\User::isLogged()) {
+		if (!\Session\User::isLogged()) {
 			$isAjax ? \Response::json(array('success' => false)) : \Response::redirect('login');
 		}
 		else {
@@ -30,22 +30,6 @@ class Market extends \Controller\Template {
 	}
 
 	public function get_index() {
-		$this->response('market');
+		$this->response('market', array('user' => \Session\User::get()));
 	}
-
-	public function get_list() {
-		$items	 = \Model\Articles::forge()->get_all();
-		$users	 = \Model\Users::forge();
-
-		// Add the user object
-		foreach ($items as $key => $item) {
-			$items[$key]->user = $users->get_by_key('id', $item->user);
-			
-			# Related user
-			(!is_null($items[$key]->user)) && $items[$key]->user->password = null;
-		}
-
-		$this->response($items);
-	}
-
 }

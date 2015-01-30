@@ -15,12 +15,13 @@
 
 namespace Model;
 
-class User {
+class User extends \Model {
 
+	protected static $table = 'user';
 	public $id;
 	public $username;
 	public $password;
-	public $group;
+	public $role;
 
 	public static function forge($args = null) {
 		return new static($args);
@@ -31,14 +32,23 @@ class User {
 			$this->id		 = $args['id'];
 			$this->username	 = $args['username'];
 			$this->password	 = $args['password'];
-			$this->group	 = $args['group'];
+			$this->role		 = $args['role'];
 		}
-		else if(is_object($args)){
+		else if (is_object($args)) {
 			$this->id		 = $args->id;
 			$this->username	 = $args->username;
 			$this->password	 = $args->password;
-			$this->group	 = $args->group;
+			$this->role		 = $args->role;
 		}
+	}
+
+	public function exist($username, $password) {
+		$query = 'SELECT * '
+		. 'FROM ' . $this->table . ' '
+		. 'WHERE username="' . \Db::escapeStr($username) . '" '
+		. 'AND password="' . \Db::escapeStr($password) . '" ';
+
+		return self::fetch(\Db::forge()->query_single($query));
 	}
 
 }

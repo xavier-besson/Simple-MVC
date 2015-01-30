@@ -18,7 +18,7 @@ class User extends \Controller\Template {
 
 	public function before() {
 		$isAjax = \Request::isAjax();
-		if (!\Helper\User::isLogged()) {
+		if (!\Session\User::isLogged()) {
 			$isAjax ? \Response::json(array('success' => false)) : \Response::redirect('login');
 		}
 		else {
@@ -37,7 +37,7 @@ class User extends \Controller\Template {
 		$response	 = array('success' => false);
 		$user		 = \Model\Users::forge()->get_by_key('id', $_GET['id']);
 		if (!is_null($user)) {
-			if (\Helper\User::isOwner($user->id)) {
+			if (\Session\User::isOwner($user->id)) {
 				$user->password	 = null;
 				$response		 = $user;
 			}
@@ -48,7 +48,7 @@ class User extends \Controller\Template {
 	public function get_list() {
 		$response = array('success' => false);
 
-		if (\Helper\User::isAdmin()) {
+		if (\Session\User::isAdmin()) {
 			$response = \Model\Users::forge()->get_all();
 		}
 
@@ -61,7 +61,7 @@ class User extends \Controller\Template {
 		$id		 = $_POST['id'];
 
 		if ($id == 0) {
-			if (\Helper\User::isAdmin()) {
+			if (\Session\User::isAdmin()) {
 				$user = \Model\User::forge();
 
 				$user->id		 = $user->get_max_value('id') + 1;
@@ -77,7 +77,7 @@ class User extends \Controller\Template {
 		else {
 			$user = $users->get_by_key('id', $id);
 			if (!is_null($user)) {
-				if (\Helper\User::isOwner($user->id)) {
+				if (\Session\User::isOwner($user->id)) {
 					$user->username	 = $_POST['username'];
 					$user->password	 = $_POST['password'];
 					isset($_POST['group']) && $user->group	 = $_POST['group'];
@@ -85,7 +85,7 @@ class User extends \Controller\Template {
 
 					$users->update('\Model\User', $user);
 
-					\Helper\User::isCurrent($user->id) && \Helper\User::set($user);
+					\Session\User::isCurrent($user->id) && \Helper\User::set($user);
 				}
 			}
 		}
@@ -100,7 +100,7 @@ class User extends \Controller\Template {
 		$article	 = $articles->get_by_key('id', $id);
 
 		if (!is_null($article)) {
-			if (\Helper\User::isOwner($article->user)) {
+			if (\Session\User::isOwner($article->user)) {
 				$articles->delete($id);
 				$success = true;
 			}

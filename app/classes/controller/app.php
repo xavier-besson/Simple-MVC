@@ -17,6 +17,6 @@ namespace Controller;
 class App extends \Controller\Template {
 
 	public function get_index(){
-		\Response::redirect((\Helper\User::isLogged() ? 'market' : 'login'));
+		\Response::redirect((\Session\User::isLogged() ? 'market' : 'login'));
 	}
 }

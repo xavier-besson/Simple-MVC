@@ -12,12 +12,14 @@
  * @author esl-xavierb
  */
 
-namespace Helper;
+namespace Session;
 
-class User {
+class User extends \Session {
 
+	protected static $key = 'user';
+	
 	public static function isLogged() {
-		return isset($_SESSION['user']);
+		return self::exist();
 	}
 
 	public static function isAdmin() {
@@ -32,15 +34,15 @@ class User {
 		return $id == self::get('id');
 	}
 
-	public static function get($key = null) {
-		return ($key === null ? $_SESSION['user'] : $_SESSION['user'][$key]);
-	}
-
-	public static function set($user) {
-		$_SESSION['user']				 = array();
-		$_SESSION['user']['id']			 = $user->id;
-		$_SESSION['user']['username']	 = $user->username;
-		$_SESSION['user']['group']		 = $user->group;
-	}
+//	public static function set($user) {
+//		$_SESSION['user']				 = array();
+//		$_SESSION['user']['id']			 = $user->id;
+//		$_SESSION['user']['username']	 = $user->username;
+//		$_SESSION['user']['group']		 = $user->group;
+//	}
+//	
+//	public static function destroy(){
+//		unset($_SESSION['user']);
+//	}
 
 }

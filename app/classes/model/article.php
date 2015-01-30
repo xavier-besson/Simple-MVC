@@ -15,8 +15,9 @@
 
 namespace Model;
 
-class Article {
+class Article extends \Model {
 
+	protected static $table = 'article';
 	public $id;
 	public $name;
 	public $link;
@@ -24,10 +25,6 @@ class Article {
 	public $unit_price;
 	public $content;
 	public $user;
-
-	public static function forge($args = null) {
-		return new static($args);
-	}
 
 	protected function __construct($args) {
 		if (is_array($args)) {
@@ -48,6 +45,24 @@ class Article {
 			$this->content		 = $args->content;
 			$this->user			 = $args->user;
 		}
+	}
+	
+	public function insert(){
+		\Db::forge()->execute('INSERT INTO '
+		. 'article ('
+		. 'name, '
+		. 'link, '
+		. 'quantity, '
+		. 'unit_price, '
+		. 'content, '
+		. 'user) VALUES ('
+		. '"' . \Db::escapeStr($this->name) . '",'
+		. '"' . \Db::escapeStr($this->link) . '",'
+		. '"' . \Db::escapeStr($this->quantity) . '",'
+		. '"' . \Db::escapeStr($this->unit_price) . '",'
+		. '"' . \Db::escapeStr($this->content) . '",'
+		. '"' . \Db::escapeStr($this->user) . '"'
+		. ')');
 	}
 
 }
