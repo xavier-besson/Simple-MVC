@@ -6,3 +6,6 @@ Alpha 0.0.2
 
 ## TODO :
 - Create an ajax plugin to manage Controller call
+- Add a core folder and manage it with router
+- Add Collection support
+- manage relate object beetween use (multiple to_array and select use)

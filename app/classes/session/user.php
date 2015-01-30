@@ -23,7 +23,7 @@ class User extends \Session {
 	}
 
 	public static function isAdmin() {
-		return self::get('group') == 1;
+		return self::get('role') == 1;
 	}
 
 	public static function isOwner($id) {
@@ -33,16 +33,4 @@ class User extends \Session {
 	public static function isCurrent($id){
 		return $id == self::get('id');
 	}
-
-//	public static function set($user) {
-//		$_SESSION['user']				 = array();
-//		$_SESSION['user']['id']			 = $user->id;
-//		$_SESSION['user']['username']	 = $user->username;
-//		$_SESSION['user']['group']		 = $user->group;
-//	}
-//	
-//	public static function destroy(){
-//		unset($_SESSION['user']);
-//	}
-
 }

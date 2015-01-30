@@ -13,32 +13,109 @@
  */
 class Model {
 
-	protected static $table	 = '';
-	protected static $id_field	 = 'id';
+	protected static $_table				 = '';
+	protected static $_id					 = 'id';
+	protected static $_id_auto_incremente	 = true;
+	protected $_properties					 = array();
+	private $_data							 = array();
 
 	public static function forge($args = null) {
 		return new static($args);
 	}
 
-	public function before() {
-		is_null($this->_db) && $this->_db = \Db::forge();
+	protected function __construct($args) {
+		$properties = null;
+		if(is_object($args)){
+			$properties = get_object_vars($args);
+		}
+		else if (is_array($args)){
+			$properties = $args;
+		}
+		
+		if(is_array($properties)){
+			foreach($properties as $key => $value){
+				$this->{$key} = $value;
+			}
+		}
+	}
+
+	public function __get($name) {
+		return (isset($this->_data[$name]) ? $this->_data[$name] : null);
+	}
+
+	public function __set($name, $value) {
+		in_array($name, $this->_properties) && $this->_data[$name] = $value;
+	}
+
+	public function to_array() {
+		return $this->_data;
 	}
 
 	public function delete() {
-//		$this->_db->execute('DELETE FROM ' . $this->table . 'WHERE ' . $this->id_field . ' = "' . $this->{$this->id_field} . '"');
+		$db = \Db::forge();
+		$db->execute('DELETE FROM ' . static::$_table . ' WHERE ' . static::$_id . ' = "' . $this->{static::$_id} . '"');
+		unset($db);
+	}
+
+	public function save() {
+		$db	 = \Db::forge();
+		$id	 = $this->{static::$_id};
+
+		$query	 = '';
+		$row	 = $this->_properties;
+
+		# Remove id from $row if auto incremente
+		if (static::$_id_auto_incremente === true) {
+			unset($row[static::$_id]);
+		}
+
+		if ($id == 0 || is_null($id)) {
+			$query = $this->_get_insert_query($row);
+		}
+		else {
+			$query = $this->_get_update_query($row);
+		}
+		$db->execute($query);
+		unset($db);
+	}
+
+	private function _get_insert_query($row) {
+		$query = 'INSERT INTO '
+		. '' . static::$_table . ' ('
+		. join(',', $row)
+		. ') VALUES ('
+		. join(',', array_map(function($value) {
+			return '"' . \Db::escapeStr($this->{$value}) . '"';
+		}, $row))
+		. ')';
+
+		return $query;
+	}
+
+	private function _get_update_query($row) {
+		# Construct query
+		$query = 'UPDATE '
+		. '' . static::$_table . ' '
+		. 'SET '
+		. join(',', array_map(function($value) {
+			return $value . ' = "' . \Db::escapeStr($this->{$value}) . '"';
+		}, $row))
+		. 'WHERE ' . static::$_id . ' = ' . $this->{static::$_id};
+
+		return $query;
 	}
 
 	public static function find($args = null) {
-		$db = \Db::forge();
-		$result = null;
+		$db		 = \Db::forge();
+		$result	 = null;
 
 		if ($args === 'all') {
-			$result = self::fetchAll($db->query('SELECT * FROM ' . static::$table));
+			$result = static::fetchAll($db->query('SELECT * FROM ' . static::$_table));
 		}
 		else if (is_int($args)) {
-			$result = self::fetch($db->query_single('SELECT * FROM ' . static::$table . ' WHERE ' . static::$id_field . ' = "' . $args . '"'));
+			$result = static::fetch($db->query_single('SELECT * FROM ' . static::$_table . ' WHERE ' . static::$_id . ' = "' . $args . '"'));
 		}
-		
+
 		unset($db);
 
 		return $result;
@@ -46,11 +123,10 @@ class Model {
 
 	protected static function fetch($result) {
 		if (is_array($result)) {
-			$item		 = self::forge();
-			$classname	 = get_class($item);
+			$item = static::forge();
 
 			foreach ($result as $property => $value) {
-				property_exists($classname, $property) && $item->{$property} = $value;
+				$item->{$property} = $value;
 			}
 
 			return $item;
@@ -65,7 +141,7 @@ class Model {
 			$items = array();
 
 			foreach ($results as $result) {
-				$items[] = self::fetch($result);
+				$items[] = static::fetch($result);
 			}
 
 			return $items;

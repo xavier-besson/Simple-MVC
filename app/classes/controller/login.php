@@ -34,7 +34,7 @@ class Login extends \Controller\Template {
 		$user = \Model\User::forge()->exist($_POST['username'], $_POST['password']);
 
 		if (!is_null($user)) {
-			\Session\User::set((array) $user);
+			\Session\User::set($user->to_array());
 
 			$this->response(array('success' => true));
 		}

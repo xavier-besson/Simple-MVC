@@ -35,11 +35,11 @@ class User extends \Controller\Template {
 
 	public function get_index() {
 		$response	 = array('success' => false);
-		$user		 = \Model\Users::forge()->get_by_key('id', $_GET['id']);
+		$user		 = \Model\Users::find(intval($_GET['id']));
 		if (!is_null($user)) {
 			if (\Session\User::isOwner($user->id)) {
 				$user->password	 = null;
-				$response		 = $user;
+				$response		 = $user->to_array();
 			}
 		}
 		$this->response($response);
@@ -49,63 +49,11 @@ class User extends \Controller\Template {
 		$response = array('success' => false);
 
 		if (\Session\User::isAdmin()) {
-			$response = \Model\Users::forge()->get_all();
+			$response = array_map(function($item) {
+				return $item->to_array();
+			}, \Model\Users::find('all'));
 		}
 
 		$this->response($response);
 	}
-
-	public function post_save() {
-		$success = false;
-		$users	 = \Model\Users::forge();
-		$id		 = $_POST['id'];
-
-		if ($id == 0) {
-			if (\Session\User::isAdmin()) {
-				$user = \Model\User::forge();
-
-				$user->id		 = $user->get_max_value('id') + 1;
-				$user->username	 = $_POST['username'];
-				$user->password	 = $_POST['password'];
-				$user->group	 = $_POST['group'];
-
-				$success = true;
-
-				$users->add($user);
-			}
-		}
-		else {
-			$user = $users->get_by_key('id', $id);
-			if (!is_null($user)) {
-				if (\Session\User::isOwner($user->id)) {
-					$user->username	 = $_POST['username'];
-					$user->password	 = $_POST['password'];
-					isset($_POST['group']) && $user->group	 = $_POST['group'];
-					$success		 = true;
-
-					$users->update('\Model\User', $user);
-
-					\Session\User::isCurrent($user->id) && \Helper\User::set($user);
-				}
-			}
-		}
-
-		$this->response(array('success' => $success));
-	}
-
-	public function get_delete() {
-		$success	 = false;
-		$id			 = $_GET['id'];
-		$articles	 = \Model\Articles::forge();
-		$article	 = $articles->get_by_key('id', $id);
-
-		if (!is_null($article)) {
-			if (\Session\User::isOwner($article->user)) {
-				$articles->delete($id);
-				$success = true;
-			}
-		}
-		$this->response(array('success' => $success));
-	}
-
 }
