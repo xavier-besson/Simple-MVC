@@ -15,30 +15,24 @@
 
 namespace Model;
 
-class User {
+class User extends \Model {
 
-	public $id;
-	public $username;
-	public $password;
-	public $group;
-
-	public static function forge($args = null) {
-		return new static($args);
-	}
-
-	protected function __construct($args) {
-		if (is_array($args)) {
-			$this->id		 = $args['id'];
-			$this->username	 = $args['username'];
-			$this->password	 = $args['password'];
-			$this->group	 = $args['group'];
-		}
-		else if(is_object($args)){
-			$this->id		 = $args->id;
-			$this->username	 = $args->username;
-			$this->password	 = $args->password;
-			$this->group	 = $args->group;
-		}
+	protected static $_table = 'user';
+	
+	protected $_properties = array(
+		'id',
+		'username',
+		'password',
+		'role'
+	);
+	
+	public function exist($username, $password) {
+		$query = 'SELECT * '
+		. 'FROM ' . self::$_table . ' '
+		. 'WHERE username="' . \Db::escapeStr($username) . '" '
+		. 'AND password="' . \Db::escapeStr($password) . '" ';
+		
+		return self::fetch(\Db::forge()->query_single($query));
 	}
 
 }

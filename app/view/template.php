@@ -22,11 +22,11 @@
 		<script src="/assets/js/main.js"></script>	
 		<?php echo $js; ?>
 		<script>
-<?php if (isset($_SESSION['user'])): ?>
+<?php if (isset($user)): ?>
 				window.user = {
-					id: <?php echo $_SESSION['user']['id'] ?>,
-					username: '<?php echo $_SESSION['user']['username'] ?>',
-					group: <?php echo $_SESSION['user']['group'] ?>
+					id: <?php echo $user['id'] ?>,
+					username: '<?php echo $user['username'] ?>',
+					role: <?php echo $user['role'] ?>
 				};
 <?php endif; ?>
 		</script>

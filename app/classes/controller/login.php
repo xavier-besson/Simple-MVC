@@ -22,7 +22,7 @@ class Login extends \Controller\Template {
 	}
 
 	public function get_index() {
-		if (\Helper\User::isLogged()) {
+		if (\Session\User::isLogged()) {
 			\Response::redirect('market');
 		}
 		else {
@@ -31,16 +31,10 @@ class Login extends \Controller\Template {
 	}
 
 	public function post_index() {
-		$users = \Model\Users::forge();
-		$user = $users->exists(\Model\User::forge(array(
-			'id'		 => null,
-			'username'	 => $_POST['username'],
-			'password'	 => $_POST['password'],
-			'group'		 => 0
-		)));
+		$user = \Model\User::forge()->exist($_POST['username'], $_POST['password']);
 
 		if (!is_null($user)) {
-			\Helper\User::set($user);
+			\Session\User::set($user->to_array());
 
 			$this->response(array('success' => true));
 		}
@@ -54,11 +48,7 @@ class Login extends \Controller\Template {
 	}
 
 	public function delete_index() {
-		unset($_SESSION['user']['id']);
-		unset($_SESSION['user']['username']);
-		unset($_SESSION['user']['group']);
-		unset($_SESSION['user']);
-
+		\Session\User::destroy();
 		$this->response(array('success' => true));
 	}
 

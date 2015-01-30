@@ -13,25 +13,22 @@
  */
 class Session {
 
-	public static function get($key_path, $default = null) {
-		$keys = explode('.', $key_path);
-		$value = $default;
-		$session = $_SESSION;
-		foreach ($keys as $key) {
-			if(isset($session[$key])){
-				$session = $session[$key];
-			}
-			else{
-				return $session = false;
-			}
-		}
-		return $value;
-//		if($_SESSION) {
-//			
-//		}
-//		else {
-//			return $default;
-//		}
+	protected static $key = '';
+
+	public static function get($subkey = null) {
+		return ($subkey === null ? $_SESSION[self::$key] : $_SESSION[self::$key][$subkey]);
+	}
+
+	public static function set($item) {
+		$_SESSION[self::$key] = $item;
+	}
+
+	public static function destroy() {
+		unset($_SESSION[self::$key]);
+	}
+
+	public static function exist() {
+		return isset($_SESSION[self::$key]);
 	}
 
 }

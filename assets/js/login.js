@@ -19,7 +19,7 @@ $(document).ready(function () {
 	function sendFormData() {
 		sendAjaxRequest({
 			type: 'POST',
-			url: 'login',
+			url: '/login',
 			data: $form.serialize(),
 			before: function () {
 				$formLoader.addClass('visible');

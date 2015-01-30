@@ -15,39 +15,16 @@
 
 namespace Model;
 
-class Article {
+class Article extends \Model {
 
-	public $id;
-	public $name;
-	public $link;
-	public $quantity;
-	public $unit_price;
-	public $content;
-	public $user;
-
-	public static function forge($args = null) {
-		return new static($args);
-	}
-
-	protected function __construct($args) {
-		if (is_array($args)) {
-			$this->id			 = $args['id'];
-			$this->name			 = $args['name'];
-			$this->link			 = $args['link'];
-			$this->quantity		 = $args['quantity'];
-			$this->unit_price	 = $args['unit_price'];
-			$this->content		 = $args['content'];
-			$this->user			 = $args['user'];
-		}
-		else if (is_object($args)) {
-			$this->id			 = $args->id;
-			$this->name			 = $args->name;
-			$this->link			 = $args->link;
-			$this->quantity		 = $args->quantity;
-			$this->unit_price	 = $args->unit_price;
-			$this->content		 = $args->content;
-			$this->user			 = $args->user;
-		}
-	}
-
+	protected static $_table = 'article';
+	protected $_properties	 = array(
+		'id',
+		'name',
+		'link',
+		'quantity',
+		'unit_price',
+		'content',
+		'user'
+	);
 }
