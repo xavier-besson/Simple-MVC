@@ -22,7 +22,7 @@
 						'id'				 => 'status-' . $article['id'],
 						'name'				 => 'status-' . $article['id'],
 						'style'				 => 'margin:0;',
-						'data-market-status' => $article['id']
+						'data-articles-status' => $article['id']
 					)
 					);
 					?>
