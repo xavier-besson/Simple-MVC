@@ -13,6 +13,7 @@ define('APP_PATH', __DIR__ . '/app/');
 define('VIEW_PATH', APP_PATH . 'view/');
 define('CLASS_PATH', APP_PATH . 'classes/');
 define('DATA_PATH', APP_PATH . 'data/');
+define('CACHE_PATH', APP_PATH . 'cache/');
 
 # Autoload
 function __autoload($class) {

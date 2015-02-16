@@ -1,8 +1,21 @@
-<section class="list-container" id="list-container">
+<section class="list-container" id="promo-container">
+	<div class="row">
+		<div class="loading-overlay" id="promo-loader"><div class="spinner"></div></div>
+		<div class="large-12 columns">
+			<h1>Promotions</h1>
+			<dl class="sub-nav">
+				<dt><b>Actions:</b></dt>
+				<dd class="active"><a href="#" id="promo-refresh">Refresh</a></dd>
+			</dl>
+			<div id="promo" class="row" data-equalizer></div>
+		</div>
+	</div>
+</section>
+<section class="" id="list-container">
 	<div class="row">
 		<div class="loading-overlay" id="list-loader"><div class="spinner"></div></div>
 		<div class="large-12 columns">
-			<h1 id="form_title">List of articles</h1>
+			<h1>List of articles</h1>
 			<dl class="sub-nav">
 				<dt><b>Actions:</b></dt>
 				<dd class="active"><a href="#" id="list-refresh">Refresh</a></dd>
