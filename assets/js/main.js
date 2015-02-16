@@ -75,6 +75,7 @@ function sendAjaxRequest(args) {
 }
 
 function showModal(title, content) {
+	$(document.activeElement).blur();
 	$modalTitle.html(title);
 	$modalContent.html(content);
 	$modal.foundation('reveal', 'open');
@@ -82,4 +83,12 @@ function showModal(title, content) {
 
 function closeModal() {
 	$modal.foundation('reveal', 'close');
+}
+
+function confirmDelete() {
+	return confirm('Are you sure you want to delete this item?');
+}
+
+function confirmAction() {
+	return confirm('Are you sure you want to perform this action?');
 }

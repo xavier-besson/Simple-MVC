@@ -23,7 +23,7 @@ class Login extends \Controller\Template {
 
 	public function get_index() {
 		if (\Session\User::isLogged()) {
-			\Response::redirect('market');
+			\Response::redirect('articles');
 		}
 		else {
 			$this->response('login');

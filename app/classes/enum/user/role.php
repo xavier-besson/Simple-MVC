@@ -7,16 +7,21 @@
  */
 
 /**
- * Description of news
+ * Description of role
  *
  * @author esl-xavierb
  */
 
-namespace Controller;
+namespace Enum\User;
 
-class App extends \Controller\Template {
+class Role extends \Enum {
 
-	public function get_index(){
-		\Response::redirect((\Session\User::isLogged() ? 'articles' : 'login'));
-	}
+	const ADMIN	 = 1;
+	const USER	 = 2;
+
+	public static $data = array(
+		self::ADMIN	 => 'Administrator',
+		self::USER	 => 'User'
+	);
+
 }

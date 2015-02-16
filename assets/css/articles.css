@@ -1,13 +1,5 @@
 /* Layout */
 
-#form-close {
-	position: absolute;
-	top: 0.5rem;
-	right: 1.5rem;
-	font-size: 2rem;
-	color: #aaa;
-}
-
 @media only screen and (max-width: 40em) { 
 	#list-container table tr > th:first-child,
 	#list-container table tr > td:first-child,
@@ -17,4 +9,32 @@
 	#list-container table tr > td:nth-child(7){
 		display: none;
 	}
+}
+
+.status-1 td{
+	background-color: #fbfbfb;
+}
+
+.status-2 td,
+.status-2 td a,
+.status-3 td,
+.status-3 td a,
+.status-4 td,
+.status-4 td a,
+.status-5 td,
+.status-5 td a{
+	color: #fff;
+}
+
+.status-2 td{
+	background-color: #008cba;
+}
+
+.status-3 td{
+	background-color: #43ac6a;
+}
+
+.status-4 td,
+.status-5 td{
+	background-color: #f04124;
 }

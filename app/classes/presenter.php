@@ -7,16 +7,11 @@
  */
 
 /**
- * Description of news
+ * Description of collection
  *
  * @author esl-xavierb
  */
+class Presenter {
 
-namespace Controller;
 
-class App extends \Controller\Template {
-
-	public function get_index(){
-		\Response::redirect((\Session\User::isLogged() ? 'articles' : 'login'));
-	}
 }

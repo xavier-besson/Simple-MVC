@@ -7,16 +7,14 @@
  */
 
 /**
- * Description of news
+ * Description of collection
  *
  * @author esl-xavierb
  */
 
-namespace Controller;
+namespace Presenter\Form;
 
-class App extends \Controller\Template {
+class Htmllist extends \Presenter\Form {
 
-	public function get_index(){
-		\Response::redirect((\Session\User::isLogged() ? 'articles' : 'login'));
-	}
+
 }

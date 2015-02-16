@@ -2,7 +2,7 @@
 	<nav class="top-bar" data-topbar role="navigation">
 		<ul class="title-area">
 			<li class="name">
-				<h1><a href="index.php">French market</a></h1>
+				<h1><a href="index.php">Shop</a></h1>
 			</li>
 			<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
 			<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
@@ -11,7 +11,7 @@
 		<section class="top-bar-section">
 			<!-- Right Nav Section -->
 			<ul class="right">
-				<li class="active"><a href="/market">Return to market</a></li>
+				<li class="active"><a href="/articles">Return to shop</a></li>
 				<?php require_once VIEW_PATH . 'app/header/user.php'; ?>
 			</ul>
 

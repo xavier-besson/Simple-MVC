@@ -2,25 +2,22 @@
 	<div class="row">
 		<div class="loading-overlay" id="list-loader"><div class="spinner"></div></div>
 		<div class="large-12 columns">
-			<h1 id="form_title">List of articles</h1>
+			<h1 id="form_title">List of users</h1>
 			<dl class="sub-nav">
-				<dt>Actions:</dt>
+				<dt><b>Actions:</b></dt>
+				<dd class="active"><a href="users/add" id="add-user">Add a new user</a></dd>
 				<dd class="active"><a href="#" id="list-refresh">Refresh</a></dd>
 			</dl>
 			<table class="full-width">
 				<thead>
 					<tr>
 						<th style="width:50px;">Id</th>
-						<th style="width:120px;">User</th>
-						<th>Title / Remarks</th>
-						<th style="width:120px;">Quantity</th>
-						<th style="width:120px;">Unit price <small>(€)</small></th>
-						<th style="width:120px;">Total <small>(€)</small></th>
-						<th style="width:100px;"></th>
+						<th>Username</th>
+						<th>Role</th>
+						<th style="width:230px;"></th>
 					</tr>
 				</thead>
 				<tbody id="list">
-
 				</tbody>
 			</table>
 		</div>
