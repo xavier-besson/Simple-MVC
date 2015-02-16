@@ -7,16 +7,21 @@
  */
 
 /**
- * Description of news
+ * Description of collection
  *
  * @author esl-xavierb
  */
+class Enum {
 
-namespace Controller;
+	public static $data = array();
 
-class App extends \Controller\Template {
-
-	public function get_index(){
-		\Response::redirect((\Session\User::isLogged() ? 'articles' : 'login'));
+	public static function get_label($value) {
+		if (isset(static::$data[$value])) {
+			return static::$data[$value];
+		}
+		else {
+			return null;
+		}
 	}
+
 }

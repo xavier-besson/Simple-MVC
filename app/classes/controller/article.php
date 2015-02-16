@@ -34,20 +34,6 @@ class Article extends \Controller\Template {
 		$this->response($response);
 	}
 
-	public function get_list() {
-		$articles = \Model\Article::find('all');
-
-		foreach ($articles as $key => $article) {
-			# Related user
-			$user			 = \Model\User::find($article->user);
-			(!is_null($user)) && $user->password	 = null;
-
-			$articles[$key]->user	 = $user->to_array();
-			$articles[$key]			 = $articles[$key]->to_array();
-		}
-		$this->response($articles);
-	}
-
 	public function post_save() {
 		$success = false;
 		$id		 = intval($_POST['id']);
@@ -59,6 +45,8 @@ class Article extends \Controller\Template {
 			$article->quantity	 = $_POST['quantity'];
 			$article->unit_price = $_POST['unit_price'];
 			$article->content	 = $_POST['content'];
+			$article->date		 = time();
+			$article->status	 = \Enum\Article\Status::PENDING;
 			$article->user		 = \Session\User::get('id');
 			$article->save();
 			$success			 = true;
@@ -75,8 +63,6 @@ class Article extends \Controller\Template {
 					$article->content	 = $_POST['content'];
 					$article->save();
 					$success			 = true;
-
-					$articles->update($article);
 				}
 			}
 		}
@@ -84,14 +70,46 @@ class Article extends \Controller\Template {
 		$this->response(array('success' => $success));
 	}
 
-	public function get_delete() {
-		$success	 = false;
-		$id			 = intval($_GET['id']);
-		$article	 = \Model\Article::find($id);
+	public function post_status() {
+		$success = false;
+		if (\Session\User::isAdmin()) {
+			$id		 = intval($_POST['id']);
+			$article = \Model\Article::find($id);
+
+			if (!is_null($article)) {
+				$article->status = $_POST['status'];
+				
+				$article->save();
+				$success = true;
+			}
+		}
+		$this->response(array('success' => $success));
+	}
+
+	public function post_delete() {
+		$success = false;
+		$id		 = intval($_POST['id']);
+		$article = \Model\Article::find($id);
 
 		if (!is_null($article)) {
 			if (\Session\User::isOwner($article->user)) {
 				$article->delete();
+				$success = true;
+			}
+		}
+		$this->response(array('success' => $success));
+	}
+	
+	public function post_cancel() {
+		$success = false;
+		$id		 = intval($_POST['id']);
+		$article = \Model\Article::find($id);
+
+		if (!is_null($article)) {
+			if (\Session\User::isOwner($article->user)) {
+				$article->status = \Enum\Article\Status::CANCELLED;
+				
+				$article->save();
 				$success = true;
 			}
 		}

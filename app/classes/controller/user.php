@@ -21,6 +21,9 @@ class User extends \Controller\Template {
 		if (!\Session\User::isLogged()) {
 			$isAjax ? \Response::json(array('success' => false)) : \Response::redirect('login');
 		}
+		else if (!\Session\User::isAdmin()) {
+			$isAjax ? \Response::json(array('success' => false)) : \Response::redirect('login');
+		}
 		else {
 			if (!$isAjax) {
 				$this->css	 = array('user.css');
@@ -29,31 +32,75 @@ class User extends \Controller\Template {
 		}
 	}
 
-	public function get_profile() {
-		$this->response('user');
-	}
-
 	public function get_index() {
 		$response	 = array('success' => false);
-		$user		 = \Model\Users::find(intval($_GET['id']));
+		$user		 = \Model\User::find(intval($_GET['id']));
 		if (!is_null($user)) {
-			if (\Session\User::isOwner($user->id)) {
-				$user->password	 = null;
-				$response		 = $user->to_array();
+			$user->password	 = null;
+			$response		 = $user->to_array();
+		}
+		$this->response($response);
+	}
+
+	public function post_delete() {
+		$success = false;
+		$id		 = intval($_POST['id']);
+		$user	 = \Model\User::find($id);
+
+		if (!is_null($user)) {
+			$user->delete();
+			$success = true;
+		}
+		$this->response(array('success' => $success));
+	}
+
+	public function post_save() {
+		$success = false;
+		$id		 = intval($_POST['id']);
+
+		if ($id == 0) {
+			$user = \Model\User::forge();
+
+			isset($_POST['username']) && $user->username	 = $_POST['username'];
+			isset($_POST['role']) && $user->role		 = $_POST['role'];
+			isset($_POST['password']) && $user->password	 = $_POST['password'];
+
+			$user->save();
+			$success = true;
+		}
+		else {
+			$user = \Model\User::find($id);
+
+			if (!is_null($user)) {
+				isset($_POST['username']) && $user->username	 = $_POST['username'];
+				isset($_POST['role']) && $user->role		 = $_POST['role'];
+				isset($_POST['password']) && $user->password	 = $_POST['password'];
+
+				$user->save();
+				$success = true;
+				
+				if(\Session\User::get('id') === $user->id){
+					\Session\User::set($user->to_array());
+				}
 			}
 		}
-		$this->response($response);
+		$this->response(array('success' => $success));
 	}
 
-	public function get_list() {
-		$response = array('success' => false);
+	public function post_password() {
+		$success = false;
+		$id		 = intval($_POST['id']);
 
-		if (\Session\User::isAdmin()) {
-			$response = array_map(function($item) {
-				return $item->to_array();
-			}, \Model\Users::find('all'));
+		$user = \Model\User::find($id);
+
+		if (!is_null($user)) {
+			$user->password = $_POST['password'];
+
+			$user->save();
+			$success = true;
 		}
 
-		$this->response($response);
+		$this->response(array('success' => $success));
 	}
+
 }

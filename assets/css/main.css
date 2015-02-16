@@ -81,6 +81,14 @@ small{
 	position: relative;
 }
 
+#form-close {
+	position: absolute;
+	top: 0.5rem;
+	right: 1.5rem;
+	font-size: 2rem;
+	color: #aaa;
+}
+
 .list-container {
 	padding: 2rem 0;
 	position: relative;

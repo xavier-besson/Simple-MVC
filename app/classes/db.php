@@ -51,7 +51,7 @@ class Db {
 		}
 		return $return;
 	}
-	
+
 	public function query_single($query_string, $type = null) {
 		$return = null;
 		is_null($this->_connector) && $this->open_connection();
@@ -74,12 +74,24 @@ class Db {
 		$this->_connector = null;
 	}
 
+	public function exist() {
+		return file_exists($this->_dbfile);
+	}
+	
 	public static function escapeStr($str) {
 		return SQLite3::escapeString($str);
 	}
 
-	public function exist() {
-		return file_exists($this->_dbfile);
+	public static function format_type($value, $type) {
+		if ($type === 'INTEGER') {
+			return intval($value);
+		}
+		if ($type === 'REAL') {
+			return floatval($value);
+		}
+		else {
+			return '"' . \Db::escapeStr($value) . '"';
+		}
 	}
 
 }

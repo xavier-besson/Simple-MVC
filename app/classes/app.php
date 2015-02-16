@@ -31,10 +31,12 @@ class App {
 			$db->execute("CREATE TABLE IF NOT EXISTS article "
 			. "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
 			. "user INTEGER, "
+			. "date INTEGER, "
 			. "name STRING, "
 			. "link STRING, "
 			. "quantity INTEGER, "
 			. "unit_price REAL, "
+			. "status INTEGER, "
 			. "content TEXT,"
 			. "FOREIGN KEY(user) REFERENCES user(id)"
 			. ")");
