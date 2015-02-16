@@ -29,5 +29,11 @@ class File {
 				
 		return $str;
 	}
+	
+	public static function save_to_file($path, $content) {
+		$handle = fopen($path, 'w');
+		fwrite($handle, $content);
+		fclose($handle);
+	}
 
 }
